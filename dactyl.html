@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><title>Dactyl</title>
+<!doctype html><html lang="en" data-version="3.0.0"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><title>Dactyl</title>
 <link rel="icon" href="data:,">
 <meta name="theme-color" content="#0f1a22">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -78,6 +78,10 @@ body {
 .lyr .lm { position: absolute; left: 50%; bottom: 3px; width: 12px; height: 3px; margin-left: -6px; border-radius: 2px; background: var(--c); display: none; }
 .lyr.has .lm { display: block; }
 .lyr.rec .lm { display: block; background: var(--rec); animation: blink 0.9s steps(2, jump-none) infinite; }
+.lyr.evo .dc { border-style: dashed; }
+#infBtn[aria-pressed="true"] { color: var(--signal); border-color: var(--signal); }
+#infBtn.pulse { animation: infp 0.9s ease-out; }
+@keyframes infp { 0% { box-shadow: 0 0 0 0 var(--signal); } 100% { box-shadow: 0 0 0 14px transparent; } }
 .lyr:focus-visible { outline: 2px solid var(--wave); outline-offset: -2px; border-radius: 8px; }
 @keyframes blink { 50% { opacity: 0.25; } }
 .mark { display: none; }
@@ -96,9 +100,23 @@ body {
 .lhead { display: flex; align-items: center; gap: 10px; }
 .lhead i { width: 14px; height: 14px; border-radius: 50%; background: var(--c); flex: none; }
 
-.dock { position: absolute; left: 16px; right: 16px; bottom: 12px; z-index: 2; display: flex; gap: 8px; pointer-events: none; }
-.dock { gap: 6px; }
-.dock .btn { flex: 1; min-width: 0; padding: 0 3px; gap: 5px; font-size: 10.5px; letter-spacing: 0.03em; pointer-events: auto; }
+.dock { position: absolute; left: 10px; right: 10px; bottom: 12px; z-index: 2; display: flex; gap: 4px; pointer-events: none; }
+.dock .btn { flex: 1 1 0; min-width: 0; padding: 0 2px; gap: 4px; font-size: 10px; letter-spacing: 0.03em; pointer-events: auto; }
+.dock .btn.wl { flex-direction: column; gap: 4px; }
+.wl b { display: block; max-width: 100%; font: 400 7.5px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wl span { display: block; max-width: 100%; font: 500 10px/1 var(--font-mono); letter-spacing: 0; text-transform: none; font-variant-numeric: tabular-nums; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wl[aria-pressed="true"] { border-color: var(--signal); }
+.wl[aria-pressed="true"] span { color: var(--signal); }
+.hud { gap: 6px; padding: 8px 10px 0; }
+#addBtn, #infBtn { width: 40px; min-height: 40px; font-size: 18px; }
+.hud .layers { gap: 0; }
+.wl { position: relative; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.wl.pl::after { content: ""; position: absolute; left: 9px; right: 9px; bottom: 4px; height: 2px; border-radius: 1px; background: var(--c, var(--line-hi)); }
+.wl.wopen { border-color: var(--wave); }
+#wGhost { position: absolute; z-index: 7; width: 132px; padding: 6px; border-radius: 10px; border: 1px solid var(--line-hi); background: var(--glass); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); pointer-events: none; text-align: center; font: 500 11px/26px var(--font-mono); }
+#wGhost[hidden] { display: none; }
+#wGhost > * { display: block; height: 26px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-style: normal; font-weight: 500; color: var(--ink-dim); }
+#wGhost > b { color: var(--ink); border-top: 1px solid var(--c, var(--line-hi)); border-bottom: 1px solid var(--c, var(--line-hi)); }
 
 .cap { position: absolute; left: 16px; right: 16px; bottom: 84px; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center; pointer-events: none; opacity: 0; transition: opacity 0.35s; text-shadow: 0 0 8px var(--ground), 0 0 2px var(--ground); }
 .cap.on { opacity: 1; }
@@ -163,6 +181,9 @@ body {
 .intro-in { min-height: 100%; max-width: 460px; margin: 0 auto; padding: 28px 16px 24px; display: flex; flex-direction: column; gap: 22px; justify-content: center; }
 .intro h1 { margin: 0; font: 700 30px/1.05 var(--font-display); letter-spacing: 0.14em; }
 .lede { margin: 8px 0 0; color: var(--ink-dim); font-size: 13px; line-height: 1.5; }
+.intro .ver { margin: 6px 0 0; font: 500 10px/1 var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-dim); }
+.gsec h2 { margin: 0 0 12px; padding-top: 12px; border-top: 1px solid var(--line); font: 500 10px/1 var(--font-mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--signal); }
+.gsec + .gsec { margin-top: 4px; }
 .gestures { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
 .gestures li { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 14px; align-items: start; }
 .gestures svg { width: 36px; height: 36px; color: var(--wave); }
@@ -205,6 +226,7 @@ body {
     <button class="btn round sm" id="helpBtn" type="button" aria-label="Show gestures">?</button>
     <div class="layers" id="layers" role="group" aria-label="Layers"></div>
     <button class="btn round" id="addBtn" type="button" aria-label="Add layer">+</button>
+    <button class="btn round" id="infBtn" type="button" aria-pressed="false" aria-label="Evolve your layers" title="Evolve your layers">&#8734;</button>
   </header>
 
   <dl class="readout">
@@ -226,12 +248,15 @@ body {
 
   <nav class="dock" aria-label="Controls">
     <button class="btn" id="patchBtn" type="button" aria-expanded="false" aria-controls="sheet">Patch</button>
-    <button class="btn" id="snapBtn" type="button" aria-pressed="true"><i class="dot"></i>Snap</button>
-    <button class="btn" id="clickBtn" type="button" aria-pressed="false"><i class="dot"></i>Click</button>
+    <button class="btn wl pl" id="wSound" type="button" role="spinbutton" aria-orientation="vertical" aria-valuemin="0" aria-valuenow="0" aria-label="Sound preset. Press and drag up or down to change"><b>Sound</b><span id="wSoundV">Glass</span></button>
+    <button class="btn wl pl" id="wFx" type="button" aria-pressed="false" aria-label="Effects"><b>FX</b><span id="wFxV">As sound</span></button>
+    <button class="btn wl" id="clickBtn" type="button" aria-pressed="false" aria-label="Tempo. Tap to switch the click on or off"><b>Tempo</b><span id="wTempoV">100</span></button>
+    <button class="btn wl pl" id="wQuant" type="button" aria-pressed="false" aria-label="Quantize. Tap to switch on or off"><b>Quant</b><span id="wQuantV">1/16</span></button>
+    <button class="btn wl pl" id="wVis" type="button" aria-pressed="false" aria-label="Visual. Tap to switch on or off"><b>Visual</b><span id="wVisV">Off</span></button>
     <button class="btn rec" id="recBtn" type="button" data-state="idle"><i class="dot"></i><span id="recLbl">Rec</span></button>
-    <button class="btn" id="relBtn" type="button" disabled>Release</button>
-    <button class="btn" id="autoBtn" type="button" aria-pressed="false"><i class="dot"></i><span id="autoLbl">Tour</span></button>
   </nav>
+
+  <div id="wGhost" hidden aria-hidden="true"><i></i><b></b><i></i></div>
 
   <section class="sheet" id="sheet" aria-label="Patch controls" aria-hidden="true">
     <div class="sheet-head">
@@ -357,9 +382,12 @@ body {
     <div class="intro-in">
       <div>
         <h1>DACTYL</h1>
+        <p class="ver">Version 3</p>
         <p class="lede">A synthesizer you play with your fingers. Every gesture shapes the sound.</p>
       </div>
-      <ul class="gestures">
+      <section class="gsec">
+        <h2>Gestures</h2>
+        <ul class="gestures">
         <li>
           <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16h24M9 11l-5 5 5 5M23 11l5 5-5 5"/><circle cx="16" cy="16" r="3.2" style="fill:var(--signal);stroke:none"/></svg>
           <div><b>Drag</b><p>Left and right sets the pitch. Up and down opens the filter.</p></div>
@@ -370,7 +398,7 @@ body {
         </li>
         <li>
           <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="16" cy="16" r="11" stroke-dasharray="3 4"/><circle cx="16" cy="16" r="3.6" style="fill:var(--signal);stroke:none"/></svg>
-          <div><b>Hold</b><p>Keep still for half a second to latch a drone. Tap the ring to let it go.</p></div>
+          <div><b>Hold</b><p>Keep still for half a second to latch a drone. Tap the ring to let one go, or double tap the field to release every drone at once.</p></div>
         </li>
         <li>
           <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="25" r="3.2" style="fill:var(--signal);stroke:none"/><path d="M10 22L24 8"/><circle cx="19" cy="13" r="2.4"/><circle cx="26" cy="6" r="1.8"/></svg>
@@ -380,44 +408,75 @@ body {
           <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="24" r="3" style="fill:var(--signal);stroke:none"/><circle cx="23" cy="9" r="3" style="fill:var(--signal);stroke:none"/><path d="M11 22L21 11"/><path d="M5 14a12 12 0 0 1 8-9M27 18a12 12 0 0 1-8 9"/></svg>
           <div><b>Two fingers</b><p>Spread to widen the unison. Twist to morph the waveform from sine to square.</p></div>
         </li>
+      </ul>
+      </section>
+      <section class="gsec">
+        <h2>Compose</h2>
+        <ul class="gestures">
         <li>
           <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="9" cy="16" r="5" style="fill:var(--signal);stroke:none"/><circle cx="21" cy="16" r="5" style="stroke:var(--wave)"/><path d="M27 8v6M24 11h6"/></svg>
-          <div><b>Layers</b><p>Each circle at the top is a layer with its own sound. Tap one to play it, tap it again to turn it off. Hold to switch it without changing layers. Swipe a circle up or down to change its visual. Plus adds a layer.</p></div>
+          <div><b>Layers</b><p>Each circle at the top is a layer with its own sound. Tap one to play it, tap it again to turn it off. Hold to switch it without changing layers. Plus adds a layer, up to six.</p></div>
         </li>
         <li>
           <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M7 12a10 10 0 0 1 17-3M25 20a10 10 0 0 1-17 3"/><path d="M24 4v5h-5M8 28v-5h5"/><circle cx="16" cy="16" r="2.6" style="fill:var(--rec);stroke:none"/></svg>
-          <div><b>Loop</b><p>Press Rec, play, press Stop. Your gestures repeat on that layer. Later layers record in time with the first loop.</p></div>
+          <div><b>Loop</b><p>Press Rec, play, press Stop. Your gestures repeat on that layer. Later layers record in time with the first loop. Open Patch to clear a loop or delete a layer.</p></div>
         </li>
         <li>
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="16" cy="16" r="5"/><circle cx="16" cy="16" r="11"/></svg>
-          <div><b>Double tap</b><p>Releases every latched drone at once.</p></div>
-        </li>
-        <li>
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22h5v-8h5v6h5V9h5v9h4"/><circle cx="26" cy="7" r="2.4" style="fill:var(--signal);stroke:none"/></svg>
-          <div><b>Auto-compose</b><p>Writes a new piece on six layers, in a place chosen at random (Atrium, Tundra, Salt Flat, Terrace, Canyon, Archipelago, Cistern, Quarry or Geyser): tempo, key, chords, drums, melody and air. The parts come in and out and the piece keeps changing. Play over it, or record your own loops on top.</p></div>
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="4" width="16" height="24" rx="4"/><path d="M8 12h16M8 20h16"/><circle cx="16" cy="16" r="2.4" style="fill:var(--signal);stroke:none"/></svg>
+          <div><b>Wheels</b><p>Sound, FX, Tempo, Quant and Visual at the bottom work like the iPhone timer. Tap to switch on or off. Press or drag to scroll through the values. All but Tempo belong to the selected layer.</p></div>
         </li>
         <li>
           <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 27h14l-4-20h-6z"/><path d="M16 22L22 9"/><circle cx="22" cy="9" r="1.8" style="fill:var(--signal);stroke:none"/></svg>
-          <div><b>Click</b><p>Switch on the click for a steady beat in your ears. Set the tempo in Patch. Rec then counts you in and trims your first loop to whole bars, and the click follows the loop after that.</p></div>
+          <div><b>Click and tempo</b><p>Tap Tempo to switch the click on, scroll it to set the BPM. Rec then counts you in and trims your first loop to whole bars. Once loops exist, scrolling Tempo retimes all of them together and the pitch stays.</p></div>
         </li>
         <li>
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 5v14M10 14l6 6 6-6"/><path d="M5 22v4h22v-4"/></svg>
-          <div><b>Export</b><p>Open Patch and scroll to Export. Bounce a loop as a seamless WAV, record a take of whatever you play, or save the loops as MIDI.</p></div>
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8v16M13 8v16M21 8v16M29 8v16" stroke-dasharray="2 3"/><circle cx="12" cy="13" r="2.4" style="fill:var(--signal);stroke:none"/><path d="M14.400 13H21" /></svg>
+          <div><b>Quantize</b><p>Scroll Quant to pick 1/4, 1/8 or 1/16 and snap the selected loop to the grid. Tap it again to hear your original timing.</p></div>
         </li>
         <li>
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="16" cy="16" r="3" style="fill:var(--signal);stroke:none"/><circle cx="6" cy="9" r="2.4"/><circle cx="26" cy="9" r="2.4"/><circle cx="6" cy="24" r="2.4"/><circle cx="26" cy="24" r="2.4"/></svg>
-          <div><b>Rig</b><p>Open Patch and go to Room. Start a rig and invite friends on the same Wi-Fi with a QR code or a WhatsApp link. Their phones become speakers and the sound moves between them. Drag layers around the room map.</p></div>
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 16s5-8 13-8 13 8 13 8-5 8-13 8S3 16 3 16z"/><circle cx="16" cy="16" r="3.6" style="fill:var(--signal);stroke:none"/></svg>
+          <div><b>Visuals</b><p>Each layer has its own visual. Scroll Visual, or swipe a layer circle up or down. In Patch, Visuals can hide the interface; the UI button or Escape brings it back.</p></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22h5v-8h5v6h5V9h5v9h4"/><circle cx="26" cy="7" r="2.4" style="fill:var(--signal);stroke:none"/></svg>
+          <div><b>Geyser demo</b><p>Writes a piece on six layers: a long quiet, then a burst of steam and noise. The parts come in and out and the piece keeps changing. Play over it, or record your own loops on top. Press it again for a new take.</p></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 16c-2.6-4-5-6-7.5-6a6 6 0 0 0 0 12c2.5 0 4.900-2 7.500-6s5-6 7.500-6a6 6 0 0 1 0 12c-2.500 0-4.900-2-7.500-6z"/></svg>
+          <div><b>Evolve</b><p>Once you have a loop, the &#8734; button at the top evolves what you made. Every cycle a layer comes in or drops out, answer layers appear, the sound drifts and the key sometimes moves. Tap a layer to take it over. Tap &#8734; again to put everything back.</p></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 27V5"/><path d="M7 6h16l-4 5 4 5H7"/></svg>
+          <div><b>Tour</b><p>Take the tour below for an automatic walk through the gestures. Touch the screen to stop it.</p></div>
         </li>
       </ul>
+      </section>
+      <section class="gsec">
+        <h2>Export</h2>
+        <ul class="gestures">
+        <li>
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16h3l2-7 4 14 4-12 3 8 2-3h6"/></svg>
+          <div><b>Sound</b><p>Open Patch and scroll to Export. Bounce loop saves a seamless WAV of 1 to 8 cycles, Record take saves whatever you play, and MIDI saves the loops as notes.</p></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="7" width="24" height="18" rx="3"/><path d="M13 12l7 4-7 4z" style="fill:var(--signal);stroke:none"/></svg>
+          <div><b>Video</b><p>Bounce video records the field and the sound together for the cycles you choose. Video take records whatever you play.</p></div>
+        </li>
+      </ul>
+      </section>
+      <section class="gsec">
+        <h2>Orchestrate</h2>
+        <ul class="gestures">
+        <li>
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="16" cy="16" r="3" style="fill:var(--signal);stroke:none"/><circle cx="6" cy="9" r="2.4"/><circle cx="26" cy="9" r="2.4"/><circle cx="6" cy="24" r="2.4"/><circle cx="26" cy="24" r="2.4"/></svg>
+          <div><b>Rig</b><p>Open Patch and go to Room. Start a rig and invite friends on the same Wi-Fi with a QR code, a WhatsApp link or Share. Their phones become speakers and the sound moves between them. Drag layers and phones around the room map. Calibrate measures each phone's delay with your microphone, and Sync test plays a chirp to check by ear.</p></div>
+        </li>
+      </ul>
+      </section>
       <button class="btn go" id="startBtn" type="button">Start playing</button>
-      <div class="group" id="themeGroup" style="margin:0">
-        <h3>Place for Auto-compose</h3>
-        <div class="chips" id="themeChips" role="group" aria-label="Auto-compose place"></div>
-        <p class="note" id="themeNote" style="margin-top:10px"></p>
-      </div>
-      <button class="btn" id="composeBtn" type="button">Auto-compose</button>
+      <button class="btn" id="composeBtn" type="button">Play the Geyser demo</button>
       <button class="btn" id="demoBtn" type="button">Take the tour</button>
-      <p class="note">Auto-compose replaces your current layers and loops. Press it again for a new piece in the same place, or pick another place first.</p>
+      <p class="note">The Geyser demo replaces your current layers and loops. Press it again for a new take.</p>
       <p class="note">No sound? Switch off the silent mode switch on the side of your iPhone and raise the volume.</p>
       <p class="err" id="audioErr" hidden>This browser cannot play Web Audio.</p>
     </div>
@@ -2844,6 +2903,7 @@ const layers = [];
 let activeIdx = 0, layerSeq = 0;
 let demoLayer = null;                       // the autopilot plays on a layer of its own that is never listed
 const auto = { on: false, token: 0 };
+const inf = { on: false, seed: 0, pass: 0, nOn: -99, nOff: -99, set: [], base: new Map(), drop: null, root0: 0, rootSet: -1, lastDrift: 0 };
 const curL = () => (auto.on && demoLayer ? demoLayer : layers[activeIdx]);
 const allLayers = () => (demoLayer ? layers.concat([demoLayer]) : layers);
 const defaultPos = ci => [Math.round(2.2 * Math.sin(ci * Math.PI / 3) * 100) / 100, Math.round(2.2 * Math.cos(ci * Math.PI / 3) * 100) / 100];
@@ -3177,12 +3237,7 @@ const liveHand = newHand(null, true);
 const autoHand = newHand(null, true);
 const allHands = () => [liveHand, autoHand].concat(layers.map(l => l.hand));
 
-const relBtn = $('#relBtn');
-function updateRel() {
-  const n = active.filter(v => v.latched && !v.released).length;
-  relBtn.disabled = !n;
-  relBtn.textContent = n ? 'Release ' + n : 'Release';
-}
+function updateRel() { }                                      // Release has no button now: a double tap on the field releases every latched drone
 function silenceHand(h) { Array.from(h.ptrs.keys()).forEach(id => hUp(h, id)); }
 
 /* ---------- layer state ---------- */
@@ -3410,6 +3465,7 @@ function beginRecording(skipSlot) {
 function toggleRec() {
   if (!ctx || !started) return;
   endCompose();
+  if (rec.state === 'idle') infTouch(curL());
   if (auto.on) stopAuto();
   if (rec.state === 'idle') {
     rec.layer = curL(); rec.events = [];
@@ -4024,7 +4080,7 @@ const VPRESETS = [
 ];
 const HALO_IDX = 10;
 const FREE_VIS = [0, 9, 6, 1, 8, 5, 3, 10, 7, 2, 4, 11, 12];                        // the order a new layer picks its visual in, so stacked layers span the depths
-const ROLE_VIS = { lead: 9, pad: 12, bass: 6, drums: 11, hats: 8, nature: 1 };    // Auto-compose gives each part a visual that suits it
+const ROLE_VIS = { lead: 9, pad: 12, bass: 6, drums: 11, hats: 8, nature: 1 };    // the Geyser demo gives each part a visual that suits it
 const DEMO_VIS = [0, 12, 8, 9, 1, 11, 2, 6, 10, 3, 4];                            // the autopilot changes visual with each sound
 
 function pickVis() {
@@ -4322,6 +4378,7 @@ function tick(now) {
       rigTick(now);
       runPlayback();
       composerTick();
+      infTick();
       metTick();
       exportTick(now);
       videoTick();
@@ -4343,7 +4400,7 @@ function tick(now) {
 
 /* ---------- layer bar ---------- */
 const layersEl = $('#layers'), addBtn = $('#addBtn'), recBtn = $('#recBtn'), recLbl = $('#recLbl');
-const sheet = $('#sheet'), patchBtn = $('#patchBtn'), snapBtn = $('#snapBtn');
+const sheet = $('#sheet'), patchBtn = $('#patchBtn');
 const lyrEls = new Map();
 function renderLayers() {
   layersEl.textContent = '';
@@ -4356,7 +4413,7 @@ function renderLayers() {
     b.addEventListener('pointerdown', e => {
       longFired = false; swiped = false; sx = e.clientX; sy = e.clientY; clearTimeout(timer);
       try { b.setPointerCapture(e.pointerId); } catch (_) {}
-      timer = setTimeout(() => { longFired = true; endCompose(); if (auto.on) stopAuto(); setLayerOn(L, !L.on); }, 450);   // hold: switch without selecting
+      timer = setTimeout(() => { longFired = true; endCompose(); if (auto.on) stopAuto(); infTouch(L); setLayerOn(L, !L.on); }, 450);   // hold: switch without selecting
     });
     ['pointerup', 'pointerleave', 'pointercancel'].forEach(n => b.addEventListener(n, () => clearTimeout(timer)));
     b.addEventListener('pointermove', e => {                // swipe up or down: next or previous visual for this layer
@@ -4376,11 +4433,12 @@ function refreshLayers() {
     const sel = i === activeIdx, recording = rec.state === 'recording' && rec.layer === L;
     b.classList.toggle('sel', sel);
     b.classList.toggle('has', !!L.loop);
+    b.classList.toggle('evo', inf.on && inf.set.indexOf(L) >= 0);
     b.classList.toggle('rec', recording);
     b.setAttribute('aria-pressed', String(L.on));
     b.setAttribute('aria-label', 'Layer ' + (i + 1) + ', ' + (L.on ? 'on' : 'off') + (sel ? ', selected' : '') + (L.loop ? ', has a loop' : '') + (recording ? ', recording' : ''));
   });
-  addBtn.disabled = layers.length >= MAX_LAYERS;
+  addBtn.disabled = layers.length >= MAX_LAYERS && !(inf.on && layers.some(l => l.answer));
 }
 function pulseLayerUI(L) {
   const b = lyrEls.get(L);
@@ -4392,7 +4450,7 @@ function tapLayer(L) {
   endCompose();
   if (auto.on) stopAuto();
   if (L !== layers[activeIdx]) selectLayer(L);
-  else setLayerOn(L, !L.on);
+  else { infTouch(L); setLayerOn(L, !L.on); }
 }
 function selectLayer(L) {
   if (rec.state === 'recording' && rec.layer !== L) finishRec();
@@ -4403,6 +4461,7 @@ function selectLayer(L) {
   syncUI(); refreshLayers();
 }
 function addLayer() {
+  infFreeSlot();
   if (!ctx || layers.length >= MAX_LAYERS) return;
   endCompose();
   if (auto.on) stopAuto();
@@ -4430,7 +4489,7 @@ function refreshRec() {
   const st = rec.state;
   uiBtn.classList.toggle('rec', st !== 'idle');
   recBtn.dataset.state = st;
-  recLbl.textContent = st === 'recording' ? (rec.endAt ? 'Ending' : 'Stop') : st === 'armed' ? (rec.startAt ? 'Count' : 'Armed') : 'Rec';
+  recLbl.textContent = st === 'recording' ? (rec.endAt ? 'End' : 'Stop') : st === 'armed' ? (rec.startAt ? 'Count' : 'Arm') : 'Rec';
   recBtn.setAttribute('aria-pressed', String(st !== 'idle'));
   refreshLayers();
 }
@@ -4482,7 +4541,7 @@ document.querySelectorAll('.acc-h').forEach(h => h.addEventListener('click', () 
   const open = h.getAttribute('aria-expanded') !== 'true';
   h.setAttribute('aria-expanded', String(open)); document.getElementById(h.getAttribute('aria-controls')).hidden = !open;
 }));
-$('#snapMirror').addEventListener('click', () => snapBtn.click());
+$('#snapMirror').addEventListener('click', () => { stopAuto(); P.snap = !P.snap; syncUI(); });
 function refreshBadges() {                                  // what each closed section is set to
   const L = curL(), Q = L.patch, set = (id, t) => { const el = document.getElementById('acc-' + id + '-s'); if (el) el.textContent = t; }, lq = layers[activeIdx];
   set('sound', L.preset >= 0 ? PRESETS[L.preset].name : 'Custom');
@@ -4492,6 +4551,165 @@ function refreshBadges() {                                  // what each closed 
   set('vis', L.vis >= 0 && VPRESETS[L.vis] ? VPRESETS[L.vis].name : 'Off');
   set('room', rigLeadAny() ? rig.code + ' · ' + rig.layout.filter(n => n.online && n.id !== 'lead').length + ' ph' : 'Off');
 }
+/* Dock faces. Sound and FX wheels come in later steps; Tempo, Quant and Visual already take a tap (on or off). */
+const wQuant = $('#wQuant'), wVis = $('#wVis');
+const FACE = { 'Particle Field': 'Particle', 'Color Field': 'Color', 'Percussion': 'Perc', 'Click/Noise': 'Click', 'Shockwave': 'Shock' };
+function setFace(el, name) {                                // long names are shortened or set a little smaller; the ghost list shows the full name
+  const t = FACE[name] || name;
+  el.textContent = t; el.style.fontSize = t.length <= 7 ? '' : t.length === 8 ? '8.5px' : '7.5px';
+}
+function refreshWheels() {
+  const L = curL(), lq = layers[activeIdx] || L;
+  setFace($('#wSoundV'), L.preset >= 0 ? PRESETS[L.preset].name : 'Custom');
+  { const ws = $('#wSound'); ws.setAttribute('aria-valuemax', String(PRESETS.length - 1)); ws.setAttribute('aria-valuenow', String(Math.max(0, L.preset))); ws.setAttribute('aria-valuetext', L.preset >= 0 ? PRESETS[L.preset].name : 'Custom'); }
+  document.querySelectorAll('.wl.pl').forEach(b => b.style.setProperty('--c', L.hexc));
+  { const fn = fxIdx(L) === -2 ? 'Custom' : fxIdx(L) < 0 ? 'As sound' : FX[L.fx].name, on = L.patch.dMix > 0.001 || L.patch.rMix > 0.001;
+    setFace($('#wFxV'), fn); $('#wFx').setAttribute('aria-pressed', String(on));
+    $('#wFx').setAttribute('aria-label', 'Effects ' + fn + (on ? ', on' : ', off') + '. Tap to switch off or on, drag up or down to change'); }
+  $('#wTempoV').textContent = String(Math.round(metGrid().bpm));
+  const vn = L.vis >= 0 && VPRESETS[L.vis] ? VPRESETS[L.vis].name : 'Off';
+  wQuant.setAttribute('aria-pressed', String(!!lq.q)); $('#wQuantV').textContent = '1/' + lq.qdiv;
+  wQuant.setAttribute('aria-label', 'Quantize 1/' + lq.qdiv + (lq.q ? ', on' : ', off') + '. Tap to switch, drag up or down to change');
+  wVis.setAttribute('aria-pressed', String(L.vis >= 0)); setFace($('#wVisV'), vn);
+  wVis.setAttribute('aria-label', 'Visual ' + vn + '. Tap to switch on or off, drag up or down to change');
+  clickBtn.setAttribute('aria-label', 'Tempo ' + $('#wTempoV').textContent + ' BPM, click ' + (mt.on ? 'on' : 'off') + '. Tap to switch the click, drag up or down to change the tempo');
+}
+/* Wheels. Press (about 200 ms) or drag (8 px) opens a vertical picker above the button: up goes forward, values apply live, a flick
+   keeps rolling. A plain tap and the arrow keys keep working (tap is cfg.tap, keys step the value). The first wheel is Sound. */
+const WROW = 26, WHOLD = 200, WMOVE = 8;
+const wGhost = $('#wGhost');
+function makeWheel(btn, cfg) {
+  let st = null, lastEnd = 0, raf = 0, hideT = 0;
+  const clampI = (i, lo, hi) => Math.max(lo, Math.min(hi, i));
+  function paint(i) {
+    const n = cfg.count();
+    wGhost.children[0].textContent = i - 1 >= 0 ? cfg.label(i - 1) : '';
+    wGhost.children[1].textContent = i >= 0 ? cfg.label(i) : (cfg.custom || '');
+    wGhost.children[2].textContent = i + 1 < n ? cfg.label(i + 1) : '';
+    wGhost.style.setProperty('--c', cfg.color());
+  }
+  function place() {
+    const r = btn.getBoundingClientRect(), a = $('#app').getBoundingClientRect(), w = 132;
+    wGhost.style.left = clampI(r.left + r.width / 2 - w / 2 - a.left, 6, a.width - w - 6) + 'px';
+    wGhost.style.bottom = (a.bottom - r.top + 8) + 'px';
+    wGhost.hidden = false;
+  }
+  function openWheel() {
+    if (st.open) return;
+    st.open = true;
+    if (cfg.open) cfg.open();
+    if (cfg.locked && cfg.locked()) { st.dead = true; if (cfg.onLocked) cfg.onLocked(); return; }      // a locked wheel says why and does not move
+    st.i0 = cfg.index(); st.lo = st.i0 < 0 ? -1 : 0; st.hi = cfg.count() - 1; st.cur = st.i0;
+    clearTimeout(hideT); place(); paint(st.cur); btn.classList.add('wopen');
+  }
+  function move(s, dy) {                                  // up (negative dy) goes forward
+    if (s.dead) return;
+    const i = clampI(s.i0 + Math.round(-dy / (cfg.row || WROW)), s.lo, s.hi);
+    if (i !== s.cur) { s.cur = i; if (i >= 0) cfg.set(i); paint(i); }
+  }
+  function close() { btn.classList.remove('wopen'); hideT = setTimeout(() => { wGhost.hidden = true; }, 160); }
+  btn.addEventListener('pointerdown', e => {
+    if (e.button > 0 || btn.disabled) return;
+    cancelAnimationFrame(raf); clearTimeout(hideT);
+    if (st) clearTimeout(st.timer);
+    st = { id: e.pointerId, y0: e.clientY, open: false, pts: [[performance.now(), e.clientY]] };
+    try { btn.setPointerCapture(e.pointerId); } catch (_) {}
+    st.timer = setTimeout(() => { if (st) openWheel(); }, WHOLD);
+  });
+  btn.addEventListener('pointermove', e => {
+    if (!st || e.pointerId !== st.id) return;
+    st.pts.push([performance.now(), e.clientY]); if (st.pts.length > 6) st.pts.shift();
+    const dy = e.clientY - st.y0;
+    if (!st.open && Math.abs(dy) >= WMOVE) openWheel();
+    if (st.open) move(st, dy);
+  });
+  function end(e) {
+    if (!st || e.pointerId !== st.id) return;
+    clearTimeout(st.timer);
+    const s = st; st = null;
+    if (!s.open) return;                                   // a plain tap falls through to the click handler
+    lastEnd = performance.now();
+    if (s.dead) return;
+    const a = s.pts[0], b = s.pts[s.pts.length - 1];
+    let v = (e.type === 'pointerup' && b[0] > a[0] && lastEnd - b[0] < 70) ? (b[1] - a[1]) / (b[0] - a[0]) : 0, y = b[1] - s.y0, f = 0;
+    if (Math.abs(v) < 0.5) { close(); return; }
+    const roll = () => {                                   // a flick keeps rolling, then slows to a stop
+      y += v * 16; v *= 0.93; f++;
+      move(s, y);
+      if (Math.abs(v) > 0.06 && f < 90 && !(s.cur === s.hi && v < 0) && !(s.cur === s.lo && v > 0)) raf = requestAnimationFrame(roll); else close();
+    };
+    raf = requestAnimationFrame(roll);
+  }
+  btn.addEventListener('pointerup', end);
+  btn.addEventListener('pointercancel', end);
+  btn.addEventListener('click', () => { if (performance.now() - lastEnd < 400) return; if (cfg.tap) cfg.tap(); });
+  btn.addEventListener('contextmenu', e => e.preventDefault());
+  btn.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+    e.preventDefault();
+    if (cfg.open) cfg.open();
+    if (cfg.locked && cfg.locked()) { if (cfg.onLocked) cfg.onLocked(); return; }
+    cfg.set(clampI(cfg.index() + (e.key === 'ArrowUp' ? 1 : -1), 0, cfg.count() - 1));
+  });
+}
+makeWheel($('#wSound'), { count: () => PRESETS.length, label: i => PRESETS[i].name, custom: 'Custom', index: () => curL().preset, set: i => applyPreset(i), open: () => { if (auto.on) stopAuto(); }, color: () => curL().hexc });
+const visOrder = () => [-1].concat(VPRESETS.map((_, i) => i)).sort((a, b) => (a < 0 ? -1 : b < 0 ? 1 : VPRESETS[a].depth - VPRESETS[b].depth || a - b));
+makeWheel(wQuant, {
+  count: () => QDIVS.length, label: i => '1/' + QDIVS[i], index: () => QDIVS.indexOf(layers[activeIdx].qdiv), color: () => layers[activeIdx].hexc,
+  open: () => { if (auto.on) stopAuto(); },
+  set: i => { const L = layers[activeIdx]; L.qdiv = QDIVS[i]; L.q = true; qChanged(L); },          // choosing a grid switches Quantize on
+  tap: () => { if (auto.on) stopAuto(); const L = layers[activeIdx]; L.q = !L.q; qChanged(L); }
+});
+makeWheel(wVis, {
+  count: () => VPRESETS.length + 1, label: i => { const k = visOrder()[i]; return k < 0 ? 'Off' : VPRESETS[k].name; }, index: () => visOrder().indexOf(curL().vis), color: () => curL().hexc,
+  open: () => { if (auto.on) stopAuto(); },
+  set: i => { const k = visOrder()[i]; setVis(curL(), k); visSync(); },
+  tap: () => {
+    if (auto.on) stopAuto();
+    const L = curL();
+    if (L.vis >= 0) { L.visBack = L.vis; setVis(L, -1); visSync(); }
+    else if (L.visBack >= 0 && VPRESETS[L.visBack]) { setVis(L, L.visBack); visSync(); }
+    else visStep(L, 1);
+  }
+});
+/* FX: per-layer echo and reverb presets. They set Echo time, feedback, mix and Reverb, and leave Drive and the filter sweep alone.
+   Echo times are in beats, so they follow the tempo (the Tempo wheel and a retime re-tune them). Choosing a Sound preset keeps the FX on top;
+   "As sound" gives back the sound's own space; a hand-edited echo or reverb slider reads Custom. Tap switches the effects off and back on. */
+const FX = [
+  { name: 'Dry',      beats: 1,    dFb: 0.3,  dMix: 0,    rMix: 0 },
+  { name: 'Room',     beats: 1,    dFb: 0.3,  dMix: 0,    rMix: 0.22 },
+  { name: 'Hall',     beats: 1,    dFb: 0.3,  dMix: 0.06, rMix: 0.6 },
+  { name: 'Slapback', beats: 0.25, dFb: 0.1,  dMix: 0.35, rMix: 0.15 },
+  { name: 'Echo',     beats: 0.75, dFb: 0.4,  dMix: 0.35, rMix: 0.3 },
+  { name: 'Dub',      beats: 1,    dFb: 0.68, dMix: 0.5,  rMix: 0.35 },
+  { name: 'Cave',     beats: 0.5,  dFb: 0.58, dMix: 0.4,  rMix: 0.75 },
+  { name: 'Wash',     beats: 1.5,  dFb: 0.5,  dMix: 0.25, rMix: 0.9 }
+];
+const fxIdx = L => (L.fx == null ? -1 : L.fx);
+const fxTime = f => clamp(f.beats * 60 / (T.len ? metGrid().bpm : mt.bpm), 0.08, 0.9);
+function reapplyFx(L) {                                      // used after a Sound preset: keep the chosen FX, else the sound's own space
+  if (fxIdx(L) >= 0) { const f = FX[L.fx], Q = L.patch; Q.dTime = fxTime(f); Q.dFb = f.dFb; Q.dMix = f.dMix; Q.rMix = f.rMix; } else L.fx = -1;
+  L.fxSave = null;
+}
+function applyFxPreset(L, i) { L.fx = i; reapplyFx(L); applyFx(L); syncUI(); }
+function fxNative(L) {
+  if (L.preset >= 0) { const pr = PRESETS[L.preset], Q = L.patch; ['dTime', 'dFb', 'dMix', 'rMix'].forEach(k => { Q[k] = pr[k]; }); }
+  L.fx = -1; L.fxSave = null; applyFx(L); syncUI();
+}
+function fxRetune(L) { if (fxIdx(L) >= 0 && !L.fxSave) { L.patch.dTime = fxTime(FX[L.fx]); applyFx(L); } }
+makeWheel($('#wFx'), {
+  count: () => FX.length + 1, label: i => (i === 0 ? 'As sound' : FX[i - 1].name), custom: 'Custom',
+  index: () => { const f = fxIdx(curL()); return f === -2 ? -1 : f + 1; }, color: () => curL().hexc,
+  open: () => { if (auto.on) stopAuto(); },
+  set: i => { const L = curL(); if (i === 0) fxNative(L); else applyFxPreset(L, i - 1); },
+  tap: () => {
+    if (auto.on) stopAuto();
+    const L = curL(), Q = L.patch;
+    if (Q.dMix > 0.001 || Q.rMix > 0.001) { L.fxSave = { dMix: Q.dMix, rMix: Q.rMix }; Q.dMix = 0; Q.rMix = 0; applyFx(L); syncUI(); }
+    else if (L.fxSave) { Q.dMix = L.fxSave.dMix; Q.rMix = L.fxSave.rMix; L.fxSave = null; applyFx(L); syncUI(); }
+    else capToast('FX', 'Already dry. Scroll to choose an effect.');
+  }
+});
 const regChips = REGS.map(r => chip($('#regChips'), r[0], () => { P.reg = r[1]; syncUI(); }));
 
 /* Graphics: the gesture overlay, one visual per layer grouped by depth, and color. */
@@ -4533,10 +4751,15 @@ function visSync() {
   visOff.setAttribute('aria-pressed', String(L.vis < 0));
   visChips.forEach((b, i) => { if (b) b.setAttribute('aria-pressed', String(L.vis === i)); });
   if (visSpec) visSpec.setAttribute('aria-pressed', String(VIS.spectrum));
-  refreshBadges();
+  refreshBadges(); refreshWheels();
 }
 function visPick(i) { setVis(curL(), i); visSync(); }
 let visToastT = 0;
+function capToast(t, sub) {
+  capT.textContent = t; capS.textContent = sub; capH.textContent = ''; capEl.classList.add('on');
+  clearTimeout(visToastT);
+  visToastT = setTimeout(() => { if (!auto.on && !cmp.on) capEl.classList.remove('on'); }, 2200);
+}
 function visStep(L, dir) {                                  // the order is Off, then every preset from background to foreground
   const order = [-1].concat(VPRESETS.map((_, i) => i)).sort((a, b) => (a < 0 ? -1 : b < 0 ? 1 : VPRESETS[a].depth - VPRESETS[b].depth || a - b));
   const at = order.indexOf(L.vis), next = order[(at + dir + order.length) % order.length];
@@ -4559,6 +4782,7 @@ const sliderEls = CTRL.map(c => {
     out.textContent = c.fmt(L.patch[c.k]);
     applyFx(L);
     timbreDirty = true;
+    if (c.k === 'dTime' || c.k === 'dFb' || c.k === 'dMix' || c.k === 'rMix') { L.fx = -2; L.fxSave = null; }      // hand-set echo and reverb read Custom on the FX wheel
     clearPreset(L);
   });
   return { c, inp: el.inp, out: el.out };
@@ -4567,7 +4791,7 @@ const sliderEls = CTRL.map(c => {
 function clearPreset(L) {
   if (L.preset < 0) return;
   L.preset = -1;
-  if (L === curL()) presetChips.forEach(b => b.setAttribute('aria-pressed', 'false'));
+  if (L === curL()) { presetChips.forEach(b => b.setAttribute('aria-pressed', 'false')); refreshWheels(); }
 }
 function syncUI() {
   const L = curL(), Q = L.patch;
@@ -4577,7 +4801,6 @@ function syncUI() {
   regChips.forEach((b, i) => b.setAttribute('aria-pressed', String(REGS[i][1] === P.reg)));
   sliderEls.forEach(s => { s.inp.value = String(clamp(s.c.from(Q[s.c.k]), 0, 1)); s.out.textContent = s.c.fmt(Q[s.c.k]); });
   levelEl.inp.value = String(clamp(L.level / 1.2, 0, 1)); levelEl.out.textContent = Math.round(L.level * 100) + '%';
-  snapBtn.setAttribute('aria-pressed', String(P.snap));
   $('#snapMirror').setAttribute('aria-pressed', String(P.snap));
   { const lq = layers[activeIdx]; qOn.setAttribute('aria-pressed', String(!!lq.q)); qDivChips.forEach((b, i) => { b.setAttribute('aria-pressed', String(lq.qdiv === QDIVS[i])); b.disabled = !lq.q; }); }
   $('#layerHead').style.setProperty('--c', L.hexc);
@@ -4585,11 +4808,12 @@ function syncUI() {
   $('#layerName').textContent = auto.on ? 'Tour layer' : 'Layer ' + (activeIdx + 1) + (L.loop ? ' · ' + T.len.toFixed(1) + ' s loop' : ' · no loop') + (L.q ? ' · Q 1/' + L.qdiv : '');
   $('#clearLoop').disabled = !L.loop || auto.on;
   $('#delLayer').disabled = layers.length <= 1 || auto.on;
-  refreshBadges();
+  refreshBadges(); refreshWheels();
 }
 function applyPreset(i) {
   const L = curL(), pr = PRESETS[i];
   SOUND_KEYS.forEach(k => { L.patch[k] = pr[k]; });      // sound only: scale, root, register and snap stay as the player set them
+  reapplyFx(L);
   applyFx(L); timbreDirty = true; refireL = L;
   L.preset = i;
   if (L === demoLayer) setVis(L, DEMO_VIS[i % DEMO_VIS.length]);
@@ -4612,8 +4836,6 @@ delBtn.addEventListener('click', () => {
 $('#clearLoop').addEventListener('click', () => { endCompose(); clearLoop(layers[activeIdx]); });
 patchBtn.addEventListener('click', () => { if (auto.on) stopAuto(); toggleSheet(!sheet.classList.contains('open')); });
 $('#closeSheet').addEventListener('click', () => toggleSheet(false));
-snapBtn.addEventListener('click', () => { stopAuto(); P.snap = !P.snap; syncUI(); });
-relBtn.addEventListener('click', () => { if (ctx) releaseAllLatched(); });
 
 /* ---------- autopilot: a ghost performer on a layer of its own, driving the same gesture pipeline ---------- */
 class Cancel {}
@@ -4621,7 +4843,7 @@ const GA = 'auto-a', GB = 'auto-b';
 const pDown = (id, x, y) => hDown(autoHand, id, x, y);
 const pMove = (id, x, y) => hMove(autoHand, id, x, y);
 const pUp = id => hUp(autoHand, id);
-const autoBtn = $('#autoBtn'), autoLbl = $('#autoLbl'), capEl = $('#cap'), capT = $('#capT'), capS = $('#capS'), capH = $('#capH');
+const capEl = $('#cap'), capT = $('#capT'), capS = $('#capS'), capH = $('#capH');
 const alive = tok => auto.on && auto.token === tok;
 const easeIO = k => (k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
 
@@ -4803,13 +5025,11 @@ async function runAuto(tok) {
     if (!(e instanceof Cancel)) { console.error(e); if (auto.token === tok) stopAuto(); }
   }
 }
-function setAutoUI() {
-  autoBtn.setAttribute('aria-pressed', String(auto.on));
-  autoLbl.textContent = auto.on ? 'Stop' : 'Tour';
-}
+function setAutoUI() { }                                      // the Tour starts from the ? screen and stops on any touch
 let autoSaved = null;
 function startAuto() {
   if (!started || !ctx || auto.on || rig.role === 'speaker') return;
+  infStop(false);
   endCompose();
   toggleSheet(false);
   ensureRunning();
@@ -4841,14 +5061,13 @@ function stopAuto() {
   capEl.classList.remove('on');
   syncUI(); refreshLayers(); setAutoUI();
 }
-autoBtn.addEventListener('click', () => { if (auto.on) stopAuto(); else startAuto(); });
 
 /* ---------- composer: writes loops straight into the layers as gesture events, then arranges and evolves them ---------- */
 /* A piece is a tempo, a key, a chord loop and six roles. Each role writes the same kind of events a finger would record
    (down, move, up in field coordinates), so the loops use every tool: scale and snap, filter height, scrubs, glides,
    flicks into the echo, rolls, the tone/noise presets and per-layer sculpting. The layers then enter and leave in sections,
    and every few passes the chords, a melody, a rhythm or the key change. */
-const cmp = { pick: null, on: false, seed: 0, song: null, pass: 0, nOn: -99, nOff: -99, evolved: -1, hide: 0 };
+const cmp = { pick: 'geyser', on: false, seed: 0, song: null, pass: 0, nOn: -99, nOff: -99, evolved: -1, hide: 0 };
 
 function rng(seed) {
   let a = seed >>> 0;
@@ -5221,6 +5440,7 @@ function themeFx(S, r, key, Q) {
 
 function compose() {
   if (!ctx || !started || rig.role === 'speaker') return;
+  infStop(false);
   if (auto.on) stopAuto();
   if (rec.state !== 'idle') cancelRec();
   toggleSheet(false); resetDel();
@@ -5314,6 +5534,196 @@ function composerTick() {
     layers.forEach(L => { if (L.role && L.on && !L.pinned && !wantOn(L, nOff)) setLayerOn(L, false); });
   }
 }
+
+/* ---------- the evolving composer (the infinity button) ----------
+   It works from the loops you have made. On every cycle boundary it makes one change along an eight-pass curve: a layer comes in, a layer drops out,
+   or an answer layer arrives (your own notes moved a few scale steps, thinned out and shifted in time). Width, waveform and echo drift slowly around your values,
+   and now and then the key moves. Your loops are never edited. Stopping puts the sound, the key and the on/off state back and removes the answers.
+   Touching a layer chip (or recording on it) takes that layer out of the set. */
+const infBtn = $('#infBtn');
+const INF_CURVE = [0.35, 0.6, 0.85, 1, 1, 0.85, 0.6, 0.35];
+function infUI() {
+  infBtn.setAttribute('aria-pressed', String(inf.on));
+  infBtn.setAttribute('aria-label', inf.on ? 'Evolving. Press to stop' : 'Evolve your layers');
+  refreshLayers();
+}
+function infTrack(L) {
+  const Q = L.patch;
+  inf.base.set(L, { on0: L.on, width: Q.width, morph: Q.morph, dMix: Q.dMix, ap: null, ph: Math.random() * 6.28 });
+}
+function infRestoreSound(L) {
+  const b = inf.base.get(L); if (!b) return;
+  const Q = L.patch;
+  Q.width = b.width; Q.morph = b.morph; Q.dMix = b.dMix;
+  applyFx(L); timbreDirty = true;
+}
+function infRemove(L) {
+  const i = layers.indexOf(L); if (i < 0) return;
+  const cur = layers[activeIdx];
+  silenceHand(L.hand);
+  active.slice().forEach(v => { if (v.layer === L) releaseVoice(v, 0.15); });
+  layers.splice(i, 1);
+  destroyLayerNodes(L);
+  activeIdx = cur === L ? clamp(i - 1, 0, layers.length - 1) : Math.max(0, layers.indexOf(cur));
+  const k = inf.set.indexOf(L); if (k >= 0) inf.set.splice(k, 1);
+  inf.base.delete(L);
+  renderLayers(); syncUI();
+}
+function infFreeSlot() {
+  if (!inf.on || layers.length < MAX_LAYERS) return;
+  const A = layers.find(L => L.answer);
+  if (A) infRemove(A);
+}
+function infStop(say) {
+  if (!inf.on) return;
+  inf.on = false;
+  inf.set.slice().forEach(L => { infRestoreSound(L); const b = inf.base.get(L); if (b && !L.answer) setLayerOn(L, b.on0); });
+  layers.filter(L => L.answer).forEach(infRemove);
+  if (inf.rootSet === P.root && P.root !== inf.root0) { P.root = inf.root0; syncUI(); }
+  inf.set = []; inf.base = new Map(); inf.drop = null;
+  infUI();
+  if (say !== false) capToast('∞ stopped', 'Your layers are back as you made them.');
+}
+/* Taking a layer by hand: it leaves the set and keeps whatever state it is in. */
+function infTouch(L) {
+  if (!inf.on || !L) return;
+  const i = inf.set.indexOf(L); if (i < 0) return;
+  inf.set.splice(i, 1);
+  infRestoreSound(L);
+  inf.base.delete(L);
+  L.answer = false;
+  if (inf.drop === L) inf.drop = null;
+  if (!inf.set.length) { infStop(false); capToast('∞ stopped', 'Every layer is yours now.'); return; }
+  capToast('Layer ' + (layers.indexOf(L) + 1) + ' is yours', '∞ leaves it alone.');
+  refreshLayers();
+}
+function infStart() {
+  if (!started || !ctx || rig.role === 'speaker') return;
+  if (inf.on) { infStop(); return; }
+  if (rec.state !== 'idle') { capToast('Finish recording first', '∞ evolves what you’ve made.'); return; }
+  const src = layers.filter(L => L.loop && L.loop.ev.length);
+  if (!T.len || !src.length) { capToast('Record a loop first', '∞ evolves what you’ve made.'); return; }
+  if (xp.mode !== 'idle') { capToast('Export in progress', 'Try again when it finishes.'); return; }
+  endCompose(); if (auto.on) stopAuto();
+  ensureRunning();
+  const t = ctx.currentTime;
+  inf.on = true; inf.seed = (Math.random() * 4294967296) >>> 0; inf.pass = 0; inf.drop = null; inf.lastDrift = 0;
+  inf.nOn = Math.floor((t + 0.1 - T.start) / T.len); inf.nOff = Math.floor((t - T.start) / T.len);
+  inf.set = src.slice(); inf.base = new Map(); inf.root0 = P.root; inf.rootSet = -1;
+  src.forEach(infTrack);
+  infUI();
+  capToast('∞ evolving', 'Tap ∞ to stop. Tap a layer to take it over.');
+}
+/* The notes of a loop, thinned, moved a few scale steps and shifted in time. */
+function infShiftX(x, k) {
+  const s = clamp((x - MG) / (1 - 2 * MG), 0, 1) * SPAN;
+  let bi = 0, bd = 1e9;
+  for (let i = 0; i < tones.length; i++) { const d = Math.abs(tones[i] - s); if (d < bd) { bd = d; bi = i; } }
+  return MG + tones[clamp(bi + k, 0, tones.length - 1)] / SPAN * (1 - 2 * MG);
+}
+function infAnswerEv(src, r) {
+  const len = T.len, ev = src.loop.ev;
+  const steps = rPick(r, [-4, -3, -2, 2, 3, 4]), dt = len * rPick(r, [0, 0.125, 0.25, 0.375]), keep = 0.55 + r() * 0.25;
+  const notes = [], open = {};
+  ev.forEach(e => {
+    if (e.k === 'd') { const n = { t0: e.t, evs: [e] }; open[e.s] = n; notes.push(n); }
+    else if (open[e.s]) { open[e.s].evs.push(e); if (e.k === 'u') delete open[e.s]; }
+  });
+  let kept = notes.filter(() => r() < keep);
+  if (!kept.length && notes.length) kept = [notes[0]];
+  const out = [];
+  kept.forEach(n => {
+    const ts = (n.t0 + dt) % len;
+    n.evs.forEach(e => out.push({ t: ts + (e.t - n.t0), k: e.k, s: e.s, x: infShiftX(e.x, steps), y: e.y }));
+  });
+  return finalize(out, len);
+}
+function infSetLoop(L, src, r) {
+  const ev = infAnswerEv(src, r);
+  L.loop = { ev, marks: computeMarks(ev, T.len) };
+  L.i = 0; L.cyc = 0; L.needSync = true;
+}
+function infMakeAnswer(src, r) {
+  const L = newLayer(src.patch, src.preset, true);
+  L.on = false; setLevel(L);
+  L.answer = true; L.level = src.level * 0.7;
+  const Q = L.patch;
+  Q.morph = clamp(Q.morph + rPick(r, [-0.8, 0.6, 1]), 0, 3);
+  Q.oct = rPick(r, [-12, 0, 12]);
+  applyFx(L);
+  infSetLoop(L, src, r);
+  layers.push(L);
+  renderLayers(); syncUI();
+  inf.set.push(L); infTrack(L);
+  return L;
+}
+function infPass() {
+  const n = ++inf.pass, r = rng((inf.seed + Math.imul(n, 7919)) >>> 0), idx = (n - 1) % 8;
+  const set = inf.set, on = set.filter(L => L.on), off = set.filter(L => !L.on);
+  const want = clamp(Math.round(INF_CURVE[idx] * set.length), 1, set.length);
+  const nameOf = L => 'Layer ' + (layers.indexOf(L) + 1);
+  const players = set.filter(L => !L.answer);
+  let msg = null, sub = '∞ pass ' + n;
+  if (idx === 4 && n > 8 && r() < 0.55) {
+    P.root = (P.root + rPick(r, [5, 7])) % 12; inf.rootSet = P.root; syncUI();
+    sub = 'Key → ' + NOTE_NAMES[P.root] + ' ' + P.scale.toLowerCase();
+  }
+  if ([1, 2, 5].indexOf(idx) >= 0 && layers.filter(L => L.answer).length < 2 && layers.length < MAX_LAYERS && on.length >= 1 && players.length && r() < 0.75) {
+    const A = infMakeAnswer(rPick(r, players), r);
+    setLayerOn(A, true); msg = nameOf(A) + ' answers';
+  } else if (on.length < want && off.length) {
+    const L = rPick(r, off);
+    if (L.answer && players.length) infSetLoop(L, rPick(r, players), r);   // a returning answer is a new take
+    setLayerOn(L, true); msg = nameOf(L) + ' in';
+  } else if (on.length > want) {
+    const cand = on.filter(L => !L.pinned), ans = cand.filter(L => L.answer);
+    if (cand.length && layers.filter(L => L.on && L.loop).length > 1) {
+      const L = rPick(r, ans.length && r() < 0.7 ? ans : cand);
+      inf.drop = L; msg = nameOf(L) + ' out';
+    }
+  }
+  if (msg || sub.charAt(0) === 'K') capToast(msg || '∞ evolving', sub);
+  infBtn.classList.remove('pulse'); void infBtn.offsetWidth; infBtn.classList.add('pulse');
+  refreshLayers();
+}
+/* Width, waveform and echo wander slowly around the values you set; an edit made by hand becomes the new centre. */
+function infDrift(t) {
+  if (t - inf.lastDrift < 0.1) return;
+  inf.lastDrift = t;
+  const cyc = (t - T.start) / T.len;
+  inf.set.forEach(L => {
+    const b = inf.base.get(L); if (!b) return;
+    const Q = L.patch;
+    if (b.ap) {
+      if (Math.abs(Q.width - b.ap.width) > 1e-4) b.width = Q.width;
+      if (Math.abs(Q.morph - b.ap.morph) > 1e-4) b.morph = Q.morph;
+      if (Math.abs(Q.dMix - b.ap.dMix) > 1e-4) b.dMix = Q.dMix;
+    }
+    const a = 6.2832 * (cyc / 8) + b.ph;
+    Q.width = clamp(b.width + 0.22 * Math.sin(a), 0.05, 1);
+    Q.morph = clamp(b.morph + 0.5 * Math.sin(a * 0.7 + 1), 0, 3);
+    Q.dMix = clamp(b.dMix + 0.1 * Math.sin(a * 0.5 + 2), 0, 0.9);
+    b.ap = { width: Q.width, morph: Q.morph, dMix: Q.dMix };
+    applyFx(L);
+  });
+  timbreDirty = true;
+}
+function infTick() {
+  if (!inf.on) return;
+  if (!T.len) { infStop(false); capToast('∞ stopped', 'Nothing left to evolve.'); return; }
+  if (rec.state !== 'idle' || xp.mode !== 'idle') return;      // it waits while you record or export
+  inf.set = inf.set.filter(L => layers.indexOf(L) >= 0 && L.loop && L.loop.ev.length);
+  if (!inf.set.length) { infStop(false); capToast('∞ stopped', 'Nothing left to evolve.'); return; }
+  const t = ctx.currentTime, nOn = Math.floor((t + 0.1 - T.start) / T.len), nOff = Math.floor((t - T.start) / T.len);
+  if (nOn !== inf.nOn) { inf.nOn = nOn; infPass(); }
+  if (nOff !== inf.nOff) {
+    inf.nOff = nOff;
+    const d = inf.drop; inf.drop = null;
+    if (d && d.on && !d.pinned && layers.filter(L => L.on && L.loop).length > 1) setLayerOn(d, false);
+  }
+  infDrift(t);
+}
+infBtn.addEventListener('click', () => infStart());
 
 /* ---------- export: a WAV of the mix, a WAV take of what you play, and the loops as MIDI ---------- */
 /* The mix is captured as it plays (an AudioWorklet tap on the master output, or a ScriptProcessor where worklets are missing),
@@ -5601,7 +6011,7 @@ function refreshExport() {
   else if (m === 'tail') { st = 'Letting the tails ring out…'; pill = 'Finishing…'; }
   else if (xp.ready) { st = xp.ready.video ? 'Ready: ' + fmtClock(xp.ready.secs) + ' of video with sound.' : 'Ready: ' + fmtClock(xp.ready.secs) + ' of audio.' + (dlCap ? ' It saves as a zip with the WAV inside.' : ''); pill = 'Ready · tap to save'; pillGo = true; }
   else if (xp.msg) st = xp.msg;
-  else if (!T.len) st = 'Bounce needs a loop. Record one with Rec, or use Auto-compose. Take records whatever you play.';
+  else if (!T.len) st = 'Bounce needs a loop. Record one with Rec, or play the Geyser demo. Take records whatever you play.';
   else st = 'Bounce saves ' + xp.cycles + ' cycle' + (xp.cycles > 1 ? 's' : '') + ' (' + (xp.cycles * T.len).toFixed(1) + ' s) of the mix as a WAV that repeats seamlessly. Take records whatever you play. Bounce video records the field and the sound together, same cycles; Video take records whatever you play. MIDI saves the loops as notes.';
   if (xp.ready && xp.msg && m === 'idle') st = xp.msg + ' ' + st;
   xpStatus.textContent = st;
@@ -5813,6 +6223,7 @@ const bpmRow = sliderRow($('#clickRows'), 'ctl-bpm', 'Tempo', (n, out) => {
   if (T.len) { refreshClick(); return; }
   mt.bpm = Math.round(40 + n * 160); out.textContent = mt.bpm + ' BPM'; mt.key = '';
   if (mt.on && ctx) mt.t0 = Math.max(ctx.currentTime + 0.05, mt.t0);
+  layers.forEach(fxRetune); syncUI();
 });
 const clvlRow = sliderRow($('#clickRows'), 'ctl-clickLevel', 'Click level', (n, out) => { mt.level = n; out.textContent = Math.round(n * 100) + '%'; });
 const beatChips = [3, 4, 5].map(n => chip($('#clickChips'), n + ' beats', () => { mt.beats = n; mt.key = ''; refreshClick(); }));
@@ -5840,12 +6251,39 @@ function refreshClick() {
   clvlRow.inp.value = String(mt.level); clvlRow.out.textContent = Math.round(mt.level * 100) + '%';
   beatChips.forEach((b, i) => b.setAttribute('aria-pressed', String([3, 4, 5][i] === mt.beats)));
   countChip.setAttribute('aria-pressed', String(mt.count));
-  refreshLat();
-  $('#clickNote').textContent = follow ? 'The click follows the loop: beat one is the loop start, and the loop is ' + g0.bars + ' bar' + (g0.bars > 1 ? 's' : '') + ' at this tempo. Clear the loops to set a new tempo.'
+  refreshLat(); refreshWheels(); refreshBadges();
+  $('#clickNote').textContent = follow ? 'The click follows the loop: beat one is the loop start, and the loop is ' + g0.bars + ' bar' + (g0.bars > 1 ? 's' : '') + ' at this tempo. Scroll Tempo at the bottom to retime every loop together, or clear the loops to start fresh.'
     : mt.on ? 'Press Rec: it counts you in, starts on a downbeat, and trims the first loop to whole bars.'
     : 'Turn Click on in the controls, set the tempo, then press Rec.';
 }
-clickBtn.addEventListener('click', () => setClick(!mt.on));
+/* Retiming: with loops present, the Tempo wheel scales every loop and the cycle by one factor. Events are stored in seconds from the
+   cycle start, so they scale directly. The cycle start is moved so the playhead stays at the same point of the cycle, which also keeps
+   each layer's cursor valid: nothing is skipped or played twice. Pitch is untouched. The loop keeps its bar count, so the tempo is exact. */
+function retimeTo(target) {
+  if (!T.len || !ctx) return;
+  const g = metGrid(), newLen = g.bars * mt.beats * 60 / target, f = newLen / T.len;
+  mt.bpm = target;
+  if (!isFinite(f) || Math.abs(f - 1) < 1e-6) { refreshClick(); return; }
+  const now = ctx.currentTime, u = (now - T.start) / T.len;
+  layers.forEach(L => { if (L.loop) L.loop.ev.forEach(e => { e.t *= f; }); });      // marks are fractions of the cycle and stay as they are
+  T.len = newLen; T.start = now - u * T.len; mt.key = '';
+  if (cmp.song) { cmp.song.len *= f; cmp.song.bpm = target; }                      // a composed piece keeps writing at the new length
+  layers.forEach(fxRetune);
+  refreshClick(); syncUI();
+}
+const tempoLo = () => (T.len ? 50 : 40), tempoHi = () => (T.len ? 190 : 200);
+makeWheel(clickBtn, {
+  count: () => 161, label: i => String(40 + i), index: () => clamp(Math.round(T.len ? metGrid().bpm : mt.bpm) - 40, 0, 160), row: 9, color: () => 'var(--line-hi)',
+  open: () => { if (auto.on) stopAuto(); },
+  locked: () => rec.state !== 'idle' || xp.mode !== 'idle',
+  onLocked: () => capToast('Tempo', rec.state !== 'idle' ? 'Finish recording first.' : 'Not while exporting.'),
+  set: i => {
+    const target = clamp(40 + i, tempoLo(), tempoHi());
+    if (T.len) { if (target !== Math.round(metGrid().bpm) || Math.abs(metGrid().bpm - target) > 0.05) retimeTo(target); return; }
+    mt.bpm = target; mt.key = ''; if (mt.on && ctx) mt.t0 = Math.max(ctx.currentTime + 0.05, mt.t0); layers.forEach(fxRetune); refreshClick(); syncUI();
+  },
+  tap: () => setClick(!mt.on)
+});
 
 /* ---------- speaker delay (Bluetooth and other slow outputs) ---------- */
 /* Sound reaches a Bluetooth speaker 100 to 300 ms late. You play against what you hear, so a take is recorded that much late, and
@@ -6532,17 +6970,7 @@ function begin() {
   return true;
 }
 startBtn.addEventListener('click', begin);
-/* Place picker: Surprise me draws a theme by weight, a place composes in that theme every time. The choice is kept between visits. */
-const themeChips = [{ id: null, name: 'Surprise me' }].concat(THEMES).map(t => chip($('#themeChips'), t.name, () => setPlace(t.id)));
-function setPlace(id) {
-  cmp.pick = THEMES.some(t => t.id === id) ? id : null;
-  try { if (cmp.pick) localStorage.setItem('dactyl.place', cmp.pick); else localStorage.removeItem('dactyl.place'); } catch (_) {}
-  const t = THEMES.find(x => x.id === cmp.pick);
-  themeChips.forEach((b, i) => b.setAttribute('aria-pressed', String(i === 0 ? !t : THEMES[i - 1] === t)));
-  $('#themeNote').textContent = t ? t.vibe + ' ' + t.bpm[0] + '-' + t.bpm[1] + ' BPM.' : 'A place is drawn at random each time.';
-  $('#composeBtn').textContent = t ? 'Auto-compose · ' + t.name : 'Auto-compose';
-}
-{ let saved = null; try { saved = localStorage.getItem('dactyl.place'); } catch (_) {} setPlace(saved); }
+/* The demo is one place: Geyser. The other themes stay in THEMES as data for later. */
 $('#composeBtn').addEventListener('click', () => { if (begin()) compose(); });
 $('#demoBtn').addEventListener('click', () => { if (begin()) startAuto(); });
 $('#helpBtn').addEventListener('click', () => {
